@@ -18,18 +18,11 @@ let sendSimpleMail = async (dataSent) => {
   let info = await transporter.sendMail({
     from: dataSent.senderEmail, // sender address
     to: "<khoitrongtran15@gmail.com>, <ctylienson@gmail.com>", // list of receivers
-    subject: "Liên hệ đặt hàng", // Subject line
+    subject: "Yêu cầu gọi lại", // Subject line
     html: `
-        <h3>Xin chào, tôi tên: ${dataSent.senderName}</h3>
-        <p>Tôi tới từ công ty: ${dataSent.senderCompany}</p>
-        <p>Tôi cần hỗ trợ: ${dataSent.senderContent}</p>
+        <h3>Tôi yêu cầu được gọi lại</h3>
         <p>Số điện thoại của tôi là: ${dataSent.senderPhone}</p>
-        <p>Hình ảnh đính kèm ở dưới</p>
-        <p>Rất mong được nhận phản hồi của anh / chị</p>
         `, // html body
-    attachments: {
-      path: dataSent.senderImage,
-    },
   });
 };
 

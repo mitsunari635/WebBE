@@ -28,6 +28,8 @@ let initWebRoutes = (app) => {
   router.delete("/api/delete-user", userController.handleDeleteUser);
   router.get("/api/allcode", userController.getAllCodes);
   router.post("/api/send-contact-email", userController.sendContactEmail);
+  router.post("/api/send-request-email", userController.sendRequestEmail);
+  router.post("/api/send-order-email", userController.sendOrderEmail);
 
   //Product API
   router.get("/api/get-all-products", productController.handleGetAllProducts);

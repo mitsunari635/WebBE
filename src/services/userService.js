@@ -2,6 +2,8 @@ import { resolveContent } from "nodemailer/lib/shared";
 import db from "../models/index";
 import bcrypt from "bcryptjs";
 import mailService from "./mailService";
+import requestMailService from "./requestMailService";
+import orderMailService from "./orderMailService";
 
 import { reject } from "lodash";
 require("dotenv").config();
@@ -99,8 +101,6 @@ let getAllUsers = (userId) => {
     }
   });
 };
-
-
 
 let createNewUser = (data) => {
   return new Promise(async (resolve, reject) => {
@@ -233,7 +233,7 @@ let sendContactEmail = (data) => {
   let defaultEmail = "travelbito@gmail.com";
   return new Promise(async (resolve, reject) => {
     try {
-      if (!data.name || !data.phone || !data.content) {
+      if (!data.phone) {
         resolve({
           errCode: 1,
           errMessage: "Missing require parameter",
@@ -249,15 +249,66 @@ let sendContactEmail = (data) => {
           senderContent: data.content,
           senderImage: data.image,
         });
-        //upsert data
-        // let user = await db.Users.findOrCreate({
-        //   where: { fullName: data.name },
-        //   defaults: {
-        //     company: data.company,
-        //     phoneNumber: data.phone,
-        //     roleId: "R3",
-        //   },
-        // });
+
+        resolve({
+          // data: user,
+          errCode: 0,
+          errMessage: "Create email success",
+        });
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+let sendRequestEmail = (data) => {
+  let defaultEmail = "travelbito@gmail.com";
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!data.phone) {
+        resolve({
+          errCode: 1,
+          errMessage: "Missing require parameter",
+        });
+      } else {
+        if (!data.email) {
+          data.email = defaultEmail;
+        }
+        await requestMailService.sendSimpleMail({
+          senderPhone: data.phone,
+        });
+
+        resolve({
+          // data: user,
+          errCode: 0,
+          errMessage: "Create email success",
+        });
+      }
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+let sendOrderEmail = (data) => {
+  let defaultEmail = "travelbito@gmail.com";
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!data.name || !data.phone) {
+        resolve({
+          errCode: 1,
+          errMessage: "Missing require parameter",
+        });
+      } else {
+        if (!data.email) {
+          data.email = defaultEmail;
+        }
+        await orderMailService.sendSimpleMail({
+          senderName: data.name,
+          senderPhone: data.phone,
+          senderOrderNumber: data.orderNumber,
+        });
 
         resolve({
           // data: user,
@@ -279,5 +330,6 @@ module.exports = {
   updateUser: updateUser,
   getAllCodesService: getAllCodesService,
   sendContactEmail: sendContactEmail,
-  
+  sendRequestEmail: sendRequestEmail,
+  sendOrderEmail: sendOrderEmail,
 };

@@ -24,6 +24,7 @@
     "nodemailer": "^6.6.3",
     "pg": "8.7.1",
     "pg-hstore": "2.3.4",
+    "react-facebook": "^9.0.12",
     "sequelize": "^6.32.1",
     "socket.io": "^4.7.2"
   },
